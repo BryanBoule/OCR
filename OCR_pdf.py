@@ -1,13 +1,11 @@
 import os
 import pdfplumber
-from helpers import OCR_helper
+from helpers import OCR_helper, constants
 
 if __name__ == '__main__':
-    print(os.listdir())
-    path = './Email_example.pdf'
 
-
-    with pdfplumber.open(path) as pdf:
+    with pdfplumber.open(os.path.join(constants.PATH,
+                                      "Email_example.pdf")) as pdf:
         page = pdf.pages[0]
         text = page.extract_text()
         print(text)
