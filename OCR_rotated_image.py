@@ -26,14 +26,3 @@ if __name__ == '__main__':
     final_rotation = image_processing_helper.rotate_image(img, angle_fix)
     final_text = tess.image_to_string(final_rotation)
     print(final_text)
-
-    cv2.imshow('Fixed inclination', final_rotation)
-    cv2.waitKey(0)
-
-    cv2.imshow('Fixed inclination', image_processing_helper.rotate_image(
-        img, angle_fix-2))
-    cv2.waitKey(0)
-
-    cv2.imshow('Fixed inclination', image_processing_helper.rotate_image(
-        img, angle_fix-4))
-    cv2.waitKey(0)
