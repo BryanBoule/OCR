@@ -1,5 +1,6 @@
 import requests
 
+
 def download_file(url):
     """
 
@@ -19,6 +20,18 @@ def download_file(url):
             f.write(r.content)
     return local_filename
 
+
 def get_content_list(text):
+    """
+
+    Parameters
+    ----------
+    text
+
+    Returns
+    -------
+
+    """
+
     lines = text.split('\n')
     return lines
