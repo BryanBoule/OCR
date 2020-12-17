@@ -67,7 +67,7 @@ def deskew_image(method='cv2'):
         grayscale = rgb2gray(image)
         angle = determine_skew(grayscale)
         rotated = rotate(image, angle, resize=True) * 255
-        io.imsave(os.path.join(constants.OUTPUT_PATH, f'{method}_output_'+
+        io.imsave(os.path.join(constants.OUTPUT_PATH, f'{method}_output_' +
                                FILENAME), rotated.astype(np.uint8))
 
     elif method == 'cv2':
@@ -75,7 +75,7 @@ def deskew_image(method='cv2'):
         grayscale = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         angle = determine_skew(grayscale)
         rotated = cv2_rotate(image, angle, (0, 0, 0))
-        cv2.imwrite(os.path.join(constants.OUTPUT_PATH, f'{method}_output_'+
+        cv2.imwrite(os.path.join(constants.OUTPUT_PATH, f'{method}_output_' +
                                  FILENAME), rotated)
 
     else:
@@ -85,4 +85,3 @@ def deskew_image(method='cv2'):
 if __name__ == '__main__':
     deskew_image(method='scikit')
     deskew_image(method='cv2')
-

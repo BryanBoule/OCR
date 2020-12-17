@@ -3,7 +3,6 @@ from helpers import constants
 import pytesseract as tess
 import numpy as np
 from tqdm import tqdm
-import os
 
 tess.pytesseract.tesseract_cmd = \
     r'C:\Users\PC\AppData\Local\Programs\Tesseract-OCR\tesseract.exe'
@@ -52,7 +51,7 @@ def perspective_transform(image, corners):
     # Determine width of new image which is the max distance between
     # (bottom right and bottom left) or (top right and top left) x-coordinates
     width_A = np.sqrt(((bottom_r[0] - bottom_l[0]) ** 2) + (
-                (bottom_r[1] - bottom_l[1]) ** 2))
+            (bottom_r[1] - bottom_l[1]) ** 2))
     width_B = np.sqrt(
         ((top_r[0] - top_l[0]) ** 2) + ((top_r[1] - top_l[1]) ** 2))
     width = max(int(width_A), int(width_B))
@@ -116,13 +115,14 @@ def rotate_image(image, angle):
     return cv2.warpAffine(image, M, (nW, nH))
 
 
+FILENAME = 'scikit_output_driving_license_resized.png'
+
 if __name__ == '__main__':
 
-    img = cv2.imread(os.path.join(constants.PATH,
-                                  "driving_license_resized.png"))
+    img = cv2.imread(constants.OUTPUT_PATH + FILENAME)
 
     list_len = []
-    for i in tqdm(range(-40, 40, 2)):
+    for i in tqdm(range(-180, 180, 90)):
         rotated = rotate_image(img, i)
         text = tess.image_to_string(rotated)
         list_len.append(len(text))
@@ -130,7 +130,7 @@ if __name__ == '__main__':
     print(list_len)
     print(np.argmax(list_len))
 
-    angle_fix = -40 + 2 * (np.argmax(list_len))
+    angle_fix = -180 + 90 * (np.argmax(list_len))
     final_rotation = rotate_image(img, angle_fix)
     final_text = tess.image_to_string(final_rotation)
     print(final_text)
