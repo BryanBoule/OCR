@@ -1,8 +1,10 @@
 import datetime
 import json
 import eml_parser
-import constants
+from helpers import constants
 import os
+
+FILENAME = 'Email_object_example.eml'
 
 
 def json_serial(obj):
@@ -11,11 +13,12 @@ def json_serial(obj):
         return serial
 
 
-with open(os.path.join(constants.PATH, 'Email_object_example.eml'), 'rb') as \
-        fhdl:
-    raw_email = fhdl.read()
+if __name__ == '__main__':
+    with open(os.path.join(constants.PATH, FILENAME),
+              'rb') as fhdl:
+        raw_email = fhdl.read()
 
-ep = eml_parser.EmlParser()
-parsed_eml = ep.decode_email_bytes(raw_email)
+    ep = eml_parser.EmlParser()
+    parsed_eml = ep.decode_email_bytes(raw_email)
 
-print(json.dumps(parsed_eml, default=json_serial))
+    print(json.dumps(parsed_eml, default=json_serial))

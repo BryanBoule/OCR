@@ -3,9 +3,15 @@ from helpers import constants
 import pytesseract as tess
 import numpy as np
 from tqdm import tqdm
+import os
 
 tess.pytesseract.tesseract_cmd = \
     r'C:\Users\PC\AppData\Local\Programs\Tesseract-OCR\tesseract.exe'
+
+FILENAME = 'scikit_output_driving_license_resized.png'
+START_ANGLE = -180
+END_ANGLE = 180
+STEP = 90
 
 
 def order_corner_points(corners):
@@ -26,9 +32,9 @@ def order_corner_points(corners):
     #       2 - bottom-left
     #       3 - bottom-right
     corners = [(corner[0][0], corner[0][1]) for corner in corners]
-    top_r, top_l, bottom_l, bottom_r = corners[0], corners[1], corners[2], \
-                                       corners[3]
-    return (top_l, top_r, bottom_r, bottom_l)
+    top_r, top_l, bottom_l, bottom_r = \
+        corners[0], corners[1], corners[2], corners[3]
+    return top_l, top_r, bottom_r, bottom_l
 
 
 def perspective_transform(image, corners):
@@ -115,22 +121,24 @@ def rotate_image(image, angle):
     return cv2.warpAffine(image, M, (nW, nH))
 
 
-FILENAME = 'scikit_output_driving_license_resized.png'
-
 if __name__ == '__main__':
 
     img = cv2.imread(constants.OUTPUT_PATH + FILENAME)
+    img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    ret, im = cv2.threshold(img_gray, 100, 255, cv2.THRESH_BINARY_INV)
 
     list_len = []
-    for i in tqdm(range(-180, 180, 90)):
-        rotated = rotate_image(img, i)
+    for i in tqdm(range(START_ANGLE, END_ANGLE, STEP)):
+        rotated = rotate_image(im, i)
         text = tess.image_to_string(rotated)
         list_len.append(len(text))
 
     print(list_len)
     print(np.argmax(list_len))
 
-    angle_fix = -180 + 90 * (np.argmax(list_len))
+    angle_fix = START_ANGLE + STEP * (np.argmax(list_len))
     final_rotation = rotate_image(img, angle_fix)
+    cv2.imwrite(os.path.join(constants.OUTPUT_PATH, 'final_rotation_' +
+                             FILENAME), final_rotation)
     final_text = tess.image_to_string(final_rotation)
     print(final_text)

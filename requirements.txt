@@ -5,3 +5,5 @@ pdfplumber~=0.5.25
 pytesseract~=0.3.7
 Pillow~=8.0.1
 tqdm~=4.54.1
+scikit-image~=0.18.0
+deskew~=0.10.3

@@ -11,12 +11,13 @@ import cv2
 # MANDATORY
 import os
 import numpy as np
-import constants
+from helpers import constants
 from deskew import determine_skew
 
 FILENAME = 'driving_license_resized.png'
 
 
+# TODO: add docstrings
 def cv2_rotate(
         image: np.ndarray, angle: float,
         background: Union[int, Tuple[int, int, int]]
