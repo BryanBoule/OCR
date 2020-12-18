@@ -22,3 +22,11 @@ This project aims at having a better understanding on how OCR works
 - eml_parser: https://pypi.org/project/eml-parser/
 - PIL: https://pillow.readthedocs.io/en/stable/
 - cv2: https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_tutorials.html
+
+### TO WATCH
+- https://www.pyimagesearch.com/2020/08/17/ocr-with-keras-tensorflow-and-deep-learning/#pyi-pyimagesearch-plus-optin-modal
+- https://towardsdatascience.com/your-guide-to-natural-language-processing-nlp-48ea2511f6e1
+- https://www.youtube.com/watch?v=XaQ0CBlQ4cY
+- https://www.youtube.com/watch?v=l8ZYCvgGu0o
+- https://www.youtube.com/watch?v=6a6L_9USZxg&t=3s
+- https://www.youtube.com/watch?v=4DrCIVS5U3Y
