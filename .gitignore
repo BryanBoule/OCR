@@ -2,4 +2,6 @@
 .vscode
 .idea
 venv
+data/other_input
+data/other_output
 **/__pycache__

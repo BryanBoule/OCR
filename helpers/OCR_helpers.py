@@ -1,18 +1,8 @@
 import requests
+import cv2
 
 
 def download_file(url):
-    """
-
-    Parameters
-    ----------
-    url
-
-    Returns
-    -------
-
-    """
-
     local_filename = url.split('/')[-1]
     with requests.get(url) as r:
         assert r.status_code == 200, f'error, status code is {r.status_code}'
@@ -22,16 +12,15 @@ def download_file(url):
 
 
 def get_content_list(text):
-    """
-
-    Parameters
-    ----------
-    text
-
-    Returns
-    -------
-
-    """
-
     lines = text.split('\n')
     return lines
+
+
+def load_image(path):
+    img = cv2.imread(path)
+    return img
+
+
+def display_image(img):
+    cv2.imshow(str(img), img)
+    cv2.waitKey(0)
