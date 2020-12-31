@@ -4,19 +4,21 @@
 
 import numpy as np
 import cv2
-import argparse
 import json
 import os
 from OCR_helpers import load_image, display_image
 from constants import OUTPUT_PATH
 
-# construct the argument parser and parse the arguments
-ap = argparse.ArgumentParser()
-ap.add_argument("-f", "--filename", required=True,
-                help="path to input image")
-args = vars(ap.parse_args())
+# import argparse
+# # construct the argument parser and parse the arguments
+# ap = argparse.ArgumentParser()
+# ap.add_argument("-f", "--filename", required=True,
+#                 help="path to input image")
+# args = vars(ap.parse_args())
+#
+# FILENAME = args["filename"]
 
-FILENAME = args["filename"]
+FILENAME = 'deskewed_constat_1.jpg'
 
 
 def get_crop_points(start_point, end_point):
@@ -104,18 +106,15 @@ if __name__ == '__main__':
     image = cv2.rectangle(img, (x1, y1), (x2, y2 + 80), (255, 0, 0), thickness)
     display_image(img)
 
-    # print(x1, y1, x2, y2+80)
     margin_from_top, margin_from_left, height, width \
         = get_crop_points((x1, y1), (x2, y2 + 80))
 
-    json_data = {}
-    json_data['boxing_rectangle'] = []
-    json_data['boxing_rectangle'].append({
-        'margin_from_top': margin_from_top,
-        'margin_from_left': margin_from_left,
-        'height': height,
-        'width': width
-    })
+    json_data = {
+        'margin_from_top': str(margin_from_top),
+        'margin_from_left': str(margin_from_left),
+        'height': str(height),
+        'width': str(width)
+    }
 
-    with open('./to_crop.txt', 'w') as outfile:
+    with open('to_crop.json', 'w') as outfile:
         json.dump(json_data, outfile)

@@ -1,16 +1,15 @@
 # USAGE
-# python test_handwriting.py --model handwriting.model --image images/umbc_address.png
+# python test_handwriting.py --model handwriting.model --image
+# crop_deskewed_constat_1.jpg
 
-# import the necessary packages
 from tensorflow.keras.models import load_model
 from imutils.contours import sort_contours
 import numpy as np
-import argparse
 import imutils
 import cv2
+from OCR_helpers import display_image
 
-
-
+# import argparse
 # # construct the argument parser and parse the arguments
 # ap = argparse.ArgumentParser()
 # ap.add_argument("-i", "--image", required=True,
@@ -19,16 +18,18 @@ import cv2
 # 	help="path to trained handwriting recognition model")
 # args = vars(ap.parse_args())
 
-if __name__ == '__main__':
+IMAGE_PATH = './data/output/crop_deskewed_constat_1.jpg'
+MODEL_PATH = './handwriting.model'
 
+if __name__ == '__main__':
 
     # load the handwriting OCR model
     print("[INFO] loading handwriting OCR model...")
-    model = load_model('./handwriting.model')
+    model = load_model(MODEL_PATH)
 
     # load the input image from disk, convert it to grayscale, and blur
     # it to reduce noise
-    image = cv2.imread('./data/output/hello_world_2.jpg')
+    image = cv2.imread(IMAGE_PATH)
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     blurred = cv2.GaussianBlur(gray, (5, 5), 0)
 
@@ -94,7 +95,6 @@ if __name__ == '__main__':
     # extract the bounding box locations and padded characters
     boxes = [b[1] for b in chars]
     chars = np.array([c[0] for c in chars], dtype="float32")
-    print(chars)
     # OCR the characters using our handwriting recognition model
     preds = model.predict(chars)
 
@@ -117,7 +117,5 @@ if __name__ == '__main__':
         cv2.putText(image, label, (x - 10, y - 10),
                     cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 255, 0), 2)
 
-
     # show the image
-    cv2.imshow("Image", image)
-    cv2.waitKey(0)
+    display_image(image)
