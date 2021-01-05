@@ -16,12 +16,19 @@ This project aims at having a better understanding on how OCR works
 - _run_test_deskew.py_: fix image skew
 - _run_json_from_eml.py_: output json object from eml file
 
-### Documentation
+### Technics
+- Canny edge detection is a technique to extract useful structural information from different vision objects and dramatically reduce the amount of data to be processed.
+- The Hough transform is a feature extraction technique to find imperfect
+ instances of objects within a certain class of shapes by a voting procedure
+ . The classical Hough transform was concerned with the identification of lines in the image, but later the Hough transform has been extended to identifying positions of arbitrary shapes, most commonly circles or ellipses.
+ 
+ ### Documentation
 - pdfplumber: https://github.com/jsvine/pdfplumber
 - tesseract: https://pypi.org/project/pytesseract/
 - eml_parser: https://pypi.org/project/eml-parser/
 - PIL: https://pillow.readthedocs.io/en/stable/
 - cv2: https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_tutorials.html
+- parsr
 
 ### TO WATCH
 - https://www.pyimagesearch.com/2020/08/17/ocr-with-keras-tensorflow-and-deep-learning/#pyi-pyimagesearch-plus-optin-modal
