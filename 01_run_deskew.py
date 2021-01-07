@@ -1,7 +1,3 @@
-# USAGE
-# python 01_run_deskew.py --filename constat_1.jpg
-# filename must be in ./data/input/ folder
-
 import math
 import cv2
 import os
@@ -9,16 +5,8 @@ import numpy as np
 from constants import PATH, OUTPUT_PATH
 from deskew import determine_skew
 
-# import argparse
-# # construct the argument parser and parse the arguments
-# ap = argparse.ArgumentParser()
-# ap.add_argument("-f", "--filename", required=True,
-#                 help="path to input image")
-# args = vars(ap.parse_args())
-#
-# FILENAME = args["filename"]
-
 FILENAME = './constat_1.jpg'
+
 
 def cv2_rotate(image, angle, background):
     old_width, old_height = image.shape[:2]

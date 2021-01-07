@@ -1,7 +1,6 @@
 import cv2
 import os
 from constants import OUTPUT_PATH
-from OCR_helpers import display_image
 import json
 
 FILENAME = 'deskewed_constat_1.jpg'
@@ -34,4 +33,5 @@ if __name__ == '__main__':
                               WIDTH)
     cv2.imwrite(os.path.join(OUTPUT_PATH, 'crop_' + FILENAME),
                 croped_image)
-    display_image(croped_image)
+    cv2.imshow('croped_image', croped_image)
+    cv2.waitKey(0)

@@ -1,7 +1,3 @@
-# USAGE
-# python test_handwriting.py --model handwriting.model --image
-# crop_deskewed_constat_1.jpg
-
 from tensorflow.keras.models import load_model
 from imutils.contours import sort_contours
 import numpy as np
@@ -9,17 +5,9 @@ import imutils
 import cv2
 from OCR_helpers import display_image
 
-# import argparse
-# # construct the argument parser and parse the arguments
-# ap = argparse.ArgumentParser()
-# ap.add_argument("-i", "--image", required=True,
-# 	help="path to input image")
-# ap.add_argument("-m", "--model", type=str, required=True,
-# 	help="path to trained handwriting recognition model")
-# args = vars(ap.parse_args())
-
-IMAGE_PATH = './data/output/crop_deskewed_constat_1.jpg'
-MODEL_PATH = './handwriting.model'
+IMAGE_PATH = './data/output/hello_world.jpg'
+# MODEL_PATH = 'resnet_model'
+MODEL_PATH = 'Model_VCNN.h5'
 
 if __name__ == '__main__':
 
@@ -32,10 +20,14 @@ if __name__ == '__main__':
     image = cv2.imread(IMAGE_PATH)
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     blurred = cv2.GaussianBlur(gray, (5, 5), 0)
+    cv2.imshow('blurred', blurred)
+    cv2.waitKey(0)
 
     # perform edge detection, find contours in the edge map, and sort the
     # resulting contours from left-to-right
     edged = cv2.Canny(blurred, 30, 150)
+    cv2.imshow('edged', edged)
+    cv2.waitKey(0)
     cnts = cv2.findContours(edged.copy(), cv2.RETR_EXTERNAL,
                             cv2.CHAIN_APPROX_SIMPLE)
     cnts = imutils.grab_contours(cnts)
@@ -52,7 +44,12 @@ if __name__ == '__main__':
 
         # filter out bounding boxes, ensuring they are neither too small
         # nor too large
-        if (w >= 5 and w <= 150) and (h >= 15 and h <= 120):
+
+        # AMELIORATION: find a strategy of bounding boxes on lines
+        # if (w >= 5 and w <= 150) and \
+        #         (h >= 5 and h <= 120):
+
+        if w >= 5 and h >= 5:
             # extract the character and threshold it to make the character
             # appear as *white* (foreground) on a *black* background, then
             # grab the width and height of the thresholded image
@@ -64,11 +61,11 @@ if __name__ == '__main__':
             # if the width is greater than the height, resize along the
             # width dimension
             if tW > tH:
-                thresh = imutils.resize(thresh, width=32)
+                thresh = imutils.resize(thresh, width=28)
 
             # otherwise, resize along the height
             else:
-                thresh = imutils.resize(thresh, height=32)
+                thresh = imutils.resize(thresh, height=28)
 
             # re-grab the image dimensions (now that its been resized)
             # and then determine how much we need to pad the width and
@@ -82,7 +79,7 @@ if __name__ == '__main__':
                                         left=dX, right=dX,
                                         borderType=cv2.BORDER_CONSTANT,
                                         value=(0, 0, 0))
-            padded = cv2.resize(padded, (32, 32))
+            padded = cv2.resize(padded, (28, 28))
 
             # prepare the padded image for classification via our
             # handwriting OCR model
@@ -101,7 +98,7 @@ if __name__ == '__main__':
     # define the list of label names
     labelNames = "0123456789"
     labelNames += "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    labelNames = [l for l in labelNames]
+    labelNames = [label for label in labelNames]
 
     # loop over the predictions and bounding box locations together
     for (pred, (x, y, w, h)) in zip(preds, boxes):
