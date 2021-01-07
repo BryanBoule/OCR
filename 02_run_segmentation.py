@@ -16,6 +16,9 @@ FILENAME = 'deskewed_constat_1.jpg'
 # lower = np.array([170, 0, 0], dtype="uint8")
 # upper = np.array([255, 170, 170], dtype="uint8")
 
+
+
+
 def get_crop_points(start_point, end_point):
     margin_from_top = start_point[1]
     margin_from_left = start_point[0]
@@ -28,7 +31,7 @@ if __name__ == '__main__':
 
     img = load_image(os.path.join(OUTPUT_PATH, FILENAME))
 
-    # get blue line
+    # Apply blue mask
     # create a mask based on blue color (B, R, G)
     lower = np.array([170, 0, 0], dtype="uint8")
     upper = np.array([255, 170, 170], dtype="uint8")
@@ -37,16 +40,16 @@ if __name__ == '__main__':
     cv2.imshow('img_filtered', img_filtered)
     cv2.waitKey(0)
 
-    # convert as gray
+    # Get grayscaled image
     gray = cv2.cvtColor(img_filtered, cv2.COLOR_BGR2GRAY)
 
-    # blur to reduce noise
+    # Reduce noise
     kernel_size = 5
     blur_gray = cv2.GaussianBlur(gray, (kernel_size, kernel_size), 0)
     cv2.imshow('blur_gray', blur_gray)
     cv2.waitKey(0)
 
-    # use canny filter for edge detection
+    # Edge detection
     low_threshold = 50
     high_threshold = 150
     edges = cv2.Canny(blur_gray, low_threshold, high_threshold)
@@ -68,8 +71,7 @@ if __name__ == '__main__':
     lines = cv2.HoughLinesP(edges, rho, theta, threshold, np.array([]),
                             min_line_length, max_line_gap)
 
-    # filter on horizontal lines (gap between y coordinates of the two
-    # points small)
+    # Filter horizontal lines
     line_list = []
     for line in lines:
         for x1, y1, x2, y2 in line:
@@ -77,8 +79,6 @@ if __name__ == '__main__':
                 line_list.append(line)
 
     new_line_list = []
-    # --------- filter area ----------
-    # inconvenient: lack of genericity
     for line in line_list:
         for x1, y1, x2, y2 in line:
             new_line_list.append(line)
@@ -87,8 +87,7 @@ if __name__ == '__main__':
     cv2.imshow('line_image', line_image)
     cv2.waitKey(0)
 
-    print(new_line_list)
-    # select line with minimum y
+    # Select upperest line
     resu = new_line_list[0]
     min_y = img.shape[0]
     for line in new_line_list:
@@ -100,9 +99,8 @@ if __name__ == '__main__':
                 resu = line
                 min_y = y1
 
-    print(resu)
     x1, y1, x2, y2 = resu[0]
-    print((x1, y1, x2, y2))
+
     # Line thickness of 2 px
     thickness = 2
 

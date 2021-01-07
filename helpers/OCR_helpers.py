@@ -21,6 +21,7 @@ def load_image(path):
     return img
 
 
-def display_image(img):
+def display_image(path):
+    img = load_image(path)
     cv2.imshow(str(img), img)
     cv2.waitKey(0)

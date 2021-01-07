@@ -23,15 +23,22 @@ def crop_image(image, y, x, h, w):
 
 
 if __name__ == '__main__':
+    # Load image
     img = cv2.imread(os.path.join(OUTPUT_PATH, FILENAME))
+
+    # Get right format of coordinates for cropping
     MARGIN_FROM_TOP, MARGIN_FROM_LEFT, HEIGHT, WIDTH = get_boxing_coordinates(
         JSON_COORDINATES)
-    croped_image = crop_image(img,
+
+    # Crop image
+    cropped_image = crop_image(img,
                               MARGIN_FROM_TOP,
                               MARGIN_FROM_LEFT,
                               HEIGHT,
                               WIDTH)
+
+    # Save and display cropped image
     cv2.imwrite(os.path.join(OUTPUT_PATH, 'crop_' + FILENAME),
-                croped_image)
-    cv2.imshow('croped_image', croped_image)
+                cropped_image)
+    cv2.imshow('croped_image', cropped_image)
     cv2.waitKey(0)

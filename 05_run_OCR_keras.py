@@ -3,11 +3,9 @@ from imutils.contours import sort_contours
 import numpy as np
 import imutils
 import cv2
-from OCR_helpers import display_image
 
-IMAGE_PATH = './data/output/hello_world.jpg'
-# MODEL_PATH = 'resnet_model'
-MODEL_PATH = 'Model_VCNN.h5'
+IMAGE_PATH = './data/output/crop_deskewed_constat_1.jpg'
+MODEL_PATH = 'Model_pretrained_RESNET'
 
 if __name__ == '__main__':
 
@@ -61,11 +59,11 @@ if __name__ == '__main__':
             # if the width is greater than the height, resize along the
             # width dimension
             if tW > tH:
-                thresh = imutils.resize(thresh, width=28)
+                thresh = imutils.resize(thresh, width=32)
 
             # otherwise, resize along the height
             else:
-                thresh = imutils.resize(thresh, height=28)
+                thresh = imutils.resize(thresh, height=32)
 
             # re-grab the image dimensions (now that its been resized)
             # and then determine how much we need to pad the width and
@@ -79,7 +77,7 @@ if __name__ == '__main__':
                                         left=dX, right=dX,
                                         borderType=cv2.BORDER_CONSTANT,
                                         value=(0, 0, 0))
-            padded = cv2.resize(padded, (28, 28))
+            padded = cv2.resize(padded, (32, 32))
 
             # prepare the padded image for classification via our
             # handwriting OCR model
@@ -115,4 +113,5 @@ if __name__ == '__main__':
                     cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 255, 0), 2)
 
     # show the image
-    display_image(image)
+    cv2.imshow('img', image)
+    cv2.waitKey(0)
